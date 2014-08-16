@@ -1,14 +1,17 @@
 package com.gtt.setstr;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
 
 public class Hello {
@@ -20,11 +23,37 @@ public class Hello {
 
 //        obj.testGetRandomList();
 
-        long ip_decimial = obj.ipToLong("192.168.1.2");
-        System.out.println(ip_decimial);
+//        long ip_decimial = obj.ipToLong("192.168.1.2");
+//        System.out.println(ip_decimial);
+//
+//        System.out.println(obj.longToIp2(ip_decimial));
 
-        System.out.println(obj.longToIp2(ip_decimial));
+        obj.parseJson();
 
+    }
+
+
+    public void parseJson(){
+        String json = "{name:\"mkyong\"}";
+
+
+        Map<String,String> map = new HashMap<String,String>();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+
+        try {
+
+            map = mapper.readValue(json,
+                    new TypeReference<HashMap<String,String>>(){});
+            System.out.println(map);
+
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
